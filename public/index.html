@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The 3-Point Revolution — WIP Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="hero">
+    <p class="eyebrow">CSE 478 • Work In Progress</p>
+    <h1>The 3‑Point Revolution</h1>
+    <p class="lede">
+      Tracking how the NBA's obsession with the arc reshaped pace, scoring, and winning over the last two decades.
+      This milestone showcases our first three coordinated D3 visualizations powered by the Kaggle
+      <a href="https://www.kaggle.com/datasets/nathanlauga/nba-games" target="_blank" rel="noopener">NBA Games dataset</a>.
+    </p>
+    <div class="hero-metrics">
+      <article>
+        <h3>2003 ➜ 2022</h3>
+        <p>Seasons processed so far</p>
+      </article>
+      <article>
+        <h3><span id="avgGrowth">+0</span>%</h3>
+        <p>Growth in league-wide 3PA rate</p>
+      </article>
+      <article>
+        <h3>3 visualizations</h3>
+        <p>Linked + animated D3 modules</p>
+      </article>
+    </div>
+  </header>
+
+  <main>
+    <section class="viz-block" id="league-trends">
+      <div class="block-header">
+        <p class="eyebrow">League Pulse</p>
+        <h2>Volume and efficiency climbed together</h2>
+        <p>
+          This multi-series view compares how average three-point attempts, accuracy, and scoring evolved by season.
+          Tap a metric to focus it and compare arcs.
+        </p>
+        <div class="legend" id="trendLegend"></div>
+      </div>
+      <div class="viz-shell" id="leagueTrendChart"></div>
+    </section>
+
+    <section class="viz-block" id="scoring-mix">
+      <div class="block-header">
+        <p class="eyebrow">Shot Value Mix</p>
+        <h2>The scoring pie keeps tilting to 3s</h2>
+        <p>
+          A stacked area shows how the share of total points from 2s, 3s, and free throws changed.
+          Hover to reveal the exact composition for any year.
+        </p>
+      </div>
+      <div class="viz-shell" id="scoringMixChart"></div>
+    </section>
+
+    <section class="viz-block" id="team-profiles">
+      <div class="block-header">
+        <p class="eyebrow">Team Archetypes</p>
+        <h2>Accuracy + volume usually beats the pack</h2>
+        <p>
+          Use the season scrubber to see how franchises balanced volume (x-axis) and accuracy (y-axis). The fill encodes win
+          percentage, highlighting which combinations translated to results.
+        </p>
+        <div class="slider-wrap">
+          <button class="slider-btn" data-dir="-1">‹</button>
+          <input type="range" min="2010" max="2022" step="1" value="2022" id="seasonSlider" />
+          <button class="slider-btn" data-dir="1">›</button>
+          <span id="seasonLabel">2022</span>
+        </div>
+        <p class="micro-copy" id="teamInsight"></p>
+      </div>
+      <div class="viz-shell" id="teamScatter"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Data: Nathan Lauga, Kaggle NBA Games (1995‑2023) • Built with vanilla D3 v7 • December 2024 WIP checkpoint.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
+  <script src="scripts/app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+[
+  {
+    "season": 2003,
+    "twoPct": 0.6378,
+    "threePct": 0.1662,
+    "ftPct": 0.196
+  },
+  {
+    "season": 2004,
+    "twoPct": 0.6228,
+    "threePct": 0.1729,
+    "ftPct": 0.2043
+  },
+  {
+    "season": 2005,
+    "twoPct": 0.6189,
+    "threePct": 0.1758,
+    "ftPct": 0.2054
+  },
+  {
+    "season": 2006,
+    "twoPct": 0.6143,
+    "threePct": 0.1835,
+    "ftPct": 0.2022
+  },
+  {
+    "season": 2007,
+    "twoPct": 0.6125,
+    "threePct": 0.1953,
+    "ftPct": 0.1922
+  },
+  {
+    "season": 2008,
+    "twoPct": 0.607,
+    "threePct": 0.199,
+    "ftPct": 0.1939
+  },
+  {
+    "season": 2009,
+    "twoPct": 0.6178,
+    "threePct": 0.1916,
+    "ftPct": 0.1906
+  },
+  {
+    "season": 2010,
+    "twoPct": 0.6141,
+    "threePct": 0.1945,
+    "ftPct": 0.1915
+  },
+  {
+    "season": 2011,
+    "twoPct": 0.6231,
+    "threePct": 0.1987,
+    "ftPct": 0.1782
+  },
+  {
+    "season": 2012,
+    "twoPct": 0.6082,
+    "threePct": 0.2188,
+    "ftPct": 0.173
+  },
+  {
+    "season": 2013,
+    "twoPct": 0.5903,
+    "threePct": 0.2303,
+    "ftPct": 0.1793
+  },
+  {
+    "season": 2014,
+    "twoPct": 0.5889,
+    "threePct": 0.2364,
+    "ftPct": 0.1747
+  },
+  {
+    "season": 2015,
+    "twoPct": 0.575,
+    "threePct": 0.2505,
+    "ftPct": 0.1745
+  },
+  {
+    "season": 2016,
+    "twoPct": 0.5549,
+    "threePct": 0.2743,
+    "ftPct": 0.1708
+  },
+  {
+    "season": 2017,
+    "twoPct": 0.5457,
+    "threePct": 0.2967,
+    "ftPct": 0.1575
+  },
+  {
+    "season": 2018,
+    "twoPct": 0.532,
+    "threePct": 0.3063,
+    "ftPct": 0.1617
+  },
+  {
+    "season": 2019,
+    "twoPct": 0.5077,
+    "threePct": 0.3303,
+    "ftPct": 0.162
+  },
+  {
+    "season": 2020,
+    "twoPct": 0.5065,
+    "threePct": 0.3407,
+    "ftPct": 0.1528
+  },
+  {
+    "season": 2021,
+    "twoPct": 0.5077,
+    "threePct": 0.3387,
+    "ftPct": 0.1536
+  },
+  {
+    "season": 2022,
+    "twoPct": 0.5123,
+    "threePct": 0.3235,
+    "ftPct": 0.1642
+  }
+]
