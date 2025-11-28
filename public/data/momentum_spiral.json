@@ -1,0 +1,162 @@
+[
+  {
+    "season": 2003,
+    "avgThreeRate": 0.1875,
+    "avgThreePct": 0.3454,
+    "avgPoints": 92.949,
+    "avgThreeAttempts": 14.91,
+    "momentum": 0.0
+  },
+  {
+    "season": 2004,
+    "avgThreeRate": 0.1968,
+    "avgThreePct": 0.3549,
+    "avgPoints": 96.927,
+    "avgThreeAttempts": 15.741,
+    "momentum": 0.1992
+  },
+  {
+    "season": 2005,
+    "avgThreeRate": 0.2023,
+    "avgThreePct": 0.3564,
+    "avgPoints": 96.756,
+    "avgThreeAttempts": 15.905,
+    "momentum": 0.2351
+  },
+  {
+    "season": 2006,
+    "avgThreeRate": 0.2132,
+    "avgThreePct": 0.3558,
+    "avgPoints": 98.394,
+    "avgThreeAttempts": 16.919,
+    "momentum": 0.2663
+  },
+  {
+    "season": 2007,
+    "avgThreeRate": 0.2211,
+    "avgThreePct": 0.3608,
+    "avgPoints": 99.41,
+    "avgThreeAttempts": 17.936,
+    "momentum": 0.3708
+  },
+  {
+    "season": 2008,
+    "avgThreeRate": 0.2245,
+    "avgThreePct": 0.365,
+    "avgPoints": 99.413,
+    "avgThreeAttempts": 18.07,
+    "momentum": 0.4439
+  },
+  {
+    "season": 2009,
+    "avgThreeRate": 0.223,
+    "avgThreePct": 0.3534,
+    "avgPoints": 100.2,
+    "avgThreeAttempts": 18.111,
+    "momentum": 0.2684
+  },
+  {
+    "season": 2010,
+    "avgThreeRate": 0.2228,
+    "avgThreePct": 0.3568,
+    "avgPoints": 99.071,
+    "avgThreeAttempts": 17.998,
+    "momentum": 0.3114
+  },
+  {
+    "season": 2011,
+    "avgThreeRate": 0.2259,
+    "avgThreePct": 0.3467,
+    "avgPoints": 95.911,
+    "avgThreeAttempts": 18.326,
+    "momentum": 0.1411
+  },
+  {
+    "season": 2012,
+    "avgThreeRate": 0.2445,
+    "avgThreePct": 0.3567,
+    "avgPoints": 97.748,
+    "avgThreeAttempts": 19.988,
+    "momentum": 0.3559
+  },
+  {
+    "season": 2013,
+    "avgThreeRate": 0.2608,
+    "avgThreePct": 0.3581,
+    "avgPoints": 100.498,
+    "avgThreeAttempts": 21.546,
+    "momentum": 0.44
+  },
+  {
+    "season": 2014,
+    "avgThreeRate": 0.2707,
+    "avgThreePct": 0.3492,
+    "avgPoints": 99.954,
+    "avgThreeAttempts": 22.557,
+    "momentum": 0.3252
+  },
+  {
+    "season": 2015,
+    "avgThreeRate": 0.2874,
+    "avgThreePct": 0.3521,
+    "avgPoints": 102.239,
+    "avgThreeAttempts": 24.246,
+    "momentum": 0.4298
+  },
+  {
+    "season": 2016,
+    "avgThreeRate": 0.317,
+    "avgThreePct": 0.3565,
+    "avgPoints": 105.361,
+    "avgThreeAttempts": 27.018,
+    "momentum": 0.5969
+  },
+  {
+    "season": 2017,
+    "avgThreeRate": 0.3387,
+    "avgThreePct": 0.3607,
+    "avgPoints": 106.063,
+    "avgThreeAttempts": 29.082,
+    "momentum": 0.7224
+  },
+  {
+    "season": 2018,
+    "avgThreeRate": 0.3596,
+    "avgThreePct": 0.3537,
+    "avgPoints": 110.934,
+    "avgThreeAttempts": 32.02,
+    "momentum": 0.7057
+  },
+  {
+    "season": 2019,
+    "avgThreeRate": 0.3886,
+    "avgThreePct": 0.3569,
+    "avgPoints": 111.37,
+    "avgThreeAttempts": 34.356,
+    "momentum": 0.8327
+  },
+  {
+    "season": 2020,
+    "avgThreeRate": 0.3935,
+    "avgThreePct": 0.365,
+    "avgPoints": 112.955,
+    "avgThreeAttempts": 35.144,
+    "momentum": 0.9812
+  },
+  {
+    "season": 2021,
+    "avgThreeRate": 0.4008,
+    "avgThreePct": 0.3531,
+    "avgPoints": 110.207,
+    "avgThreeAttempts": 35.238,
+    "momentum": 0.7973
+  },
+  {
+    "season": 2022,
+    "avgThreeRate": 0.3912,
+    "avgThreePct": 0.353,
+    "avgPoints": 112.761,
+    "avgThreeAttempts": 34.443,
+    "momentum": 0.7901
+  }
+]

@@ -11,6 +11,39 @@ from typing import Dict, Tuple
 DATA_DIR = Path("data")
 OUTPUT_DIR = Path("public/data")
 
+TEAM_COORDS = {
+    "ATL": (33.749, -84.388),
+    "BOS": (42.3601, -71.0589),
+    "BKN": (40.6782, -73.9442),
+    "NYK": (40.7128, -74.006),
+    "PHI": (39.9526, -75.1652),
+    "WAS": (38.9072, -77.0369),
+    "CLE": (41.4993, -81.6944),
+    "IND": (39.7684, -86.1581),
+    "DET": (42.3314, -83.0458),
+    "CHI": (41.8781, -87.6298),
+    "MIL": (43.0389, -87.9065),
+    "MIN": (44.9778, -93.265),
+    "MIA": (25.7617, -80.1918),
+    "ORL": (28.5383, -81.3792),
+    "CHA": (35.2271, -80.8431),
+    "TOR": (43.6532, -79.3832),
+    "DAL": (32.7767, -96.797),
+    "HOU": (29.7604, -95.3698),
+    "SAS": (29.4241, -98.4936),
+    "NOP": (29.9511, -90.0715),
+    "OKC": (35.4676, -97.5164),
+    "DEN": (39.7392, -104.9903),
+    "UTA": (40.7608, -111.891),
+    "PHX": (33.4484, -112.074),
+    "LAL": (34.0522, -118.2437),
+    "LAC": (34.0522, -118.2437),
+    "GSW": (37.7749, -122.4194),
+    "SAC": (38.5816, -121.4944),
+    "POR": (45.5152, -122.6784),
+    "MEM": (35.1495, -90.049),
+}
+
 
 def _to_float(value: str) -> float:
     if value is None or value == "":
@@ -244,6 +277,116 @@ def build_team_scatter(
     return records
 
 
+def build_heatmap(
+    team_season_sums: Dict[Tuple[int, str], Dict[str, float]],
+    team_meta: Dict[str, dict],
+    rankings: Dict[Tuple[int, str], dict],
+) -> list:
+    """Matrix-friendly data with per-team 3P behavior by season."""
+    records = []
+    for (season, team_id), totals in team_season_sums.items():
+        if season < 2003:
+            continue
+        games = totals.get("games", 0) or 1
+        fg3a = totals.get("fg3a", 0)
+        fg3m = totals.get("fg3m", 0)
+        fga = totals.get("fga", 0)
+        pts = totals.get("pts", 0)
+        meta = team_meta.get(team_id, {})
+        ranking = rankings.get((season, team_id), {})
+        record = {
+            "season": season,
+            "teamId": team_id,
+            "team": meta.get("nickname") or ranking.get("team") or "",
+            "city": meta.get("city", ""),
+            "abbr": meta.get("abbr", ""),
+            "conference": ranking.get("conference", ""),
+            "threeRate": round(fg3a / fga, 4) if fga else 0,
+            "threePct": round(fg3m / fg3a, 4) if fg3a else 0,
+            "attemptsPerGame": round(fg3a / games, 3),
+            "pointsPerGame": round(pts / games, 3) if games else 0,
+        }
+        records.append(record)
+    records.sort(key=lambda r: (r["season"], r["team"]))
+    return records
+
+
+def build_geo_snapshot(
+    team_season_sums: Dict[Tuple[int, str], Dict[str, float]],
+    team_meta: Dict[str, dict],
+    rankings: Dict[Tuple[int, str], dict],
+    season: int,
+) -> list:
+    """Latest season geographic view keyed to offensive efficiency."""
+    records = []
+    for (year, team_id), totals in team_season_sums.items():
+        if year != season:
+            continue
+        games = totals.get("games", 0) or 1
+        fg3a = totals.get("fg3a", 0)
+        fg3m = totals.get("fg3m", 0)
+        fga = totals.get("fga", 0)
+        pts = totals.get("pts", 0)
+        meta = team_meta.get(team_id, {})
+        abbr = meta.get("abbr", "")
+        coords = TEAM_COORDS.get(abbr)
+        if not coords:
+            continue
+        ranking = rankings.get((year, team_id), {})
+        record = {
+            "season": season,
+            "teamId": team_id,
+            "team": meta.get("nickname") or ranking.get("team") or "",
+            "city": meta.get("city", ""),
+            "abbr": abbr,
+            "conference": ranking.get("conference", ""),
+            "lat": coords[0],
+            "lon": coords[1],
+            "offRtg": round(pts / games, 2),
+            "threeRate": round(fg3a / fga, 4) if fga else 0,
+            "threePct": round(fg3m / fg3a, 4) if fg3a else 0,
+            "wins": ranking.get("wins"),
+            "losses": ranking.get("losses"),
+        }
+        records.append(record)
+    records.sort(key=lambda r: r["team"])
+    return records
+
+
+def build_momentum_series(league_trends: list) -> list:
+    """Derived league-wide index to drive the spiral visualization."""
+    if not league_trends:
+        return []
+    rate_values = [rec["avgThreeRate"] for rec in league_trends]
+    pct_values = [rec["avgThreePct"] for rec in league_trends]
+    pts_values = [rec["avgPoints"] for rec in league_trends]
+    rate_min, rate_max = min(rate_values), max(rate_values)
+    pct_min, pct_max = min(pct_values), max(pct_values)
+    pts_min, pts_max = min(pts_values), max(pts_values)
+
+    def normalize(value: float, lo: float, hi: float) -> float:
+        if hi - lo == 0:
+            return 0.0
+        return (value - lo) / (hi - lo)
+
+    series = []
+    for rec in league_trends:
+        index = normalize(rec["avgThreeRate"], rate_min, rate_max) * 0.55
+        index += normalize(rec["avgThreePct"], pct_min, pct_max) * 0.3
+        index += normalize(rec["avgPoints"], pts_min, pts_max) * 0.15
+        series.append(
+            {
+                "season": rec["season"],
+                "avgThreeRate": rec["avgThreeRate"],
+                "avgThreePct": rec["avgThreePct"],
+                "avgPoints": rec["avgPoints"],
+                "avgThreeAttempts": rec["avgThreeAttempts"],
+                "momentum": round(index, 4),
+            }
+        )
+    return series
+
+
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     game_seasons = load_game_seasons()
@@ -255,10 +398,17 @@ def main():
     league_trends = build_league_trends(season_sums)
     scoring_mix = build_scoring_mix(season_sums)
     team_scatter = build_team_scatter(team_season_sums, team_meta, rankings)
+    three_heatmap = build_heatmap(team_season_sums, team_meta, rankings)
+    latest_season = max(season_sums) if season_sums else 0
+    geo_map = build_geo_snapshot(team_season_sums, team_meta, rankings, latest_season)
+    momentum = build_momentum_series(league_trends)
 
     (OUTPUT_DIR / "league_trends.json").write_text(json.dumps(league_trends, indent=2))
     (OUTPUT_DIR / "scoring_mix.json").write_text(json.dumps(scoring_mix, indent=2))
     (OUTPUT_DIR / "team_scatter.json").write_text(json.dumps(team_scatter, indent=2))
+    (OUTPUT_DIR / "three_heatmap.json").write_text(json.dumps(three_heatmap, indent=2))
+    (OUTPUT_DIR / "team_map.json").write_text(json.dumps(geo_map, indent=2))
+    (OUTPUT_DIR / "momentum_spiral.json").write_text(json.dumps(momentum, indent=2))
 
     print("Wrote aggregated datasets to", OUTPUT_DIR)
 

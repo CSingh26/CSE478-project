@@ -15,11 +15,11 @@
 
 <body>
   <header class="hero">
-    <p class="eyebrow">CSE 478 • Work In Progress</p>
-    <h1>The 3‑Point Revolution</h1>
+    <p class="eyebrow">CSE 478</p>
+    <h1>The 3-Point Revolution</h1>
     <p class="lede">
       Tracking how the NBA's obsession with the arc reshaped pace, scoring, and winning over the last two decades.
-      This milestone showcases our first three coordinated D3 visualizations powered by the Kaggle
+      This milestone showcases a narrative of linked D3 visualizations powered by the Kaggle
       <a href="https://www.kaggle.com/datasets/nathanlauga/nba-games" target="_blank" rel="noopener">NBA Games dataset</a>.
     </p>
     <div class="hero-metrics">
@@ -39,39 +39,91 @@
   </header>
 
   <main>
-    <section class="viz-block" id="league-trends">
-      <div class="block-header">
-        <p class="eyebrow">League Pulse</p>
+    <section class="viz-block act-intro">
+      <p class="eyebrow">Story Spine</p>
+      <h2>From fringe weapon to league-wide religion</h2>
+      <p>
+        Follow how the NBA leaned into the arc: first as an experiment, then an advantage, and finally the default language of offense.
+        Each act pairs a sticky visualization with story beats so you can feel the turning points.
+      </p>
+    </section>
+
+    <section class="viz-block story-grid" id="league-trends">
+      <div class="story-copy">
+        <p class="eyebrow">Act I — League Pulse</p>
         <h2>Volume and efficiency climbed together</h2>
         <p>
-          This multi-series view compares how average three-point attempts, accuracy, and scoring evolved by season.
-          Tap a metric to focus it and compare arcs.
+          A three-line braid shows how attempts, accuracy, and scoring rose in lockstep. Use the story beats or legend to spotlight a thread.
         </p>
+        <div class="story-steps" data-story="league">
+          <article class="story-step active" data-season="2003" data-metric="avgThreeAttempts">
+            <h4>Humble beginnings</h4>
+            <p>2003 teams launch just ~15 threes a night. The arc is still a curveball, not a diet.</p>
+          </article>
+          <article class="story-step" data-season="2015" data-metric="avgThreeRate">
+            <h4>Curry ignition</h4>
+            <p>By 2015 the 3-point rate spikes—nearly 30% of shots—while accuracy keeps improving.</p>
+          </article>
+          <article class="story-step" data-season="2022" data-metric="avgPoints">
+            <h4>The payoff</h4>
+            <p>2022 offenses ride pace + spacing to the highest points per game in the sample.</p>
+          </article>
+        </div>
+      </div>
+      <div class="story-viz">
         <div class="legend" id="trendLegend"></div>
+        <div class="viz-shell" id="leagueTrendChart"></div>
       </div>
-      <div class="viz-shell" id="leagueTrendChart"></div>
     </section>
 
-    <section class="viz-block" id="scoring-mix">
-      <div class="block-header">
-        <p class="eyebrow">Shot Value Mix</p>
-        <h2>The scoring pie keeps tilting to 3s</h2>
+    <section class="viz-block story-grid" id="scoring-mix">
+      <div class="story-copy">
+        <p class="eyebrow">Act II — Shot Value Mix</p>
+        <h2>The scoring pie tilts to 3s</h2>
         <p>
-          A stacked area shows how the share of total points from 2s, 3s, and free throws changed.
-          Hover to reveal the exact composition for any year.
+          Stacked areas trace how points from 2s, 3s, and free throws swap share. Hover anywhere or tap a beat to see the recipe.
         </p>
+        <div class="story-steps" data-story="scoring">
+          <article class="story-step active" data-season="2005">
+            <h4>Paint first</h4>
+            <p>Early 2000s: two-pointers are almost 70% of offense; threes are garnish.</p>
+          </article>
+          <article class="story-step" data-season="2012">
+            <h4>Analytics era</h4>
+            <p>Threes and free throws creep upward as spacing unlocks drives + kickouts.</p>
+          </article>
+          <article class="story-step" data-season="2021">
+            <h4>Arc dominant</h4>
+            <p>By 2021, threes alone match free throws + a shrinking mid-range.</p>
+          </article>
+        </div>
       </div>
-      <div class="viz-shell" id="scoringMixChart"></div>
+      <div class="story-viz">
+        <div class="viz-shell" id="scoringMixChart"></div>
+      </div>
     </section>
 
-    <section class="viz-block" id="team-profiles">
-      <div class="block-header">
-        <p class="eyebrow">Team Archetypes</p>
+    <section class="viz-block story-grid" id="team-profiles">
+      <div class="story-copy">
+        <p class="eyebrow">Act III — Team Archetypes</p>
         <h2>Accuracy + volume usually beats the pack</h2>
         <p>
-          Use the season scrubber to see how franchises balanced volume (x-axis) and accuracy (y-axis). The fill encodes win
-          percentage, highlighting which combinations translated to results.
+          Use the scrubber or story beats to glide through seasons. Volume sits on the x-axis, accuracy on y. Bubble size follows winning.
         </p>
+        <div class="story-steps" data-story="scatter">
+          <article class="story-step active" data-season="2014">
+            <h4>Spurs' balance</h4>
+            <p>2014 champions pair modest volume with elite accuracy and share the ball beautifully.</p>
+          </article>
+          <article class="story-step" data-season="2018">
+            <h4>Rockets' avalanche</h4>
+            <p>Houston plants far right: 40+ 3PA a night chasing math-driven margins.</p>
+          </article>
+          <article class="story-step" data-season="2022">
+            <h4>Modern baseline</h4>
+            <p>Most contenders live in the upper-right: high volume without sacrificing efficiency.</p>
+          </article>
+        </div>
         <div class="slider-wrap">
           <button class="slider-btn" data-dir="-1">‹</button>
           <input type="range" min="2010" max="2022" step="1" value="2022" id="seasonSlider" />
@@ -80,15 +132,104 @@
         </div>
         <p class="micro-copy" id="teamInsight"></p>
       </div>
-      <div class="viz-shell" id="teamScatter"></div>
+      <div class="story-viz">
+        <div class="viz-shell" id="teamScatter"></div>
+      </div>
+    </section>
+
+    <section class="viz-block story-grid" id="three-heatmap">
+      <div class="story-copy">
+        <p class="eyebrow">Act IV — Shot DNA</p>
+        <h2>Every franchise learns to love the arc</h2>
+        <p>
+          A heatmap of 3PA share by team-season. Brighter bands show when front offices flipped the switch on spacing.
+        </p>
+        <div class="story-steps" data-story="heatmap">
+          <article class="story-step active" data-team="SAS" data-season="2007">
+            <h4>Spurs' patience</h4>
+            <p>Pocket of cooler blues as the Duncan-era Spurs stay selective from deep.</p>
+          </article>
+          <article class="story-step" data-team="GSW" data-season="2016">
+            <h4>Warriors' supernova</h4>
+            <p>A sudden neon streak as Golden State shatters the ceiling post-2015.</p>
+          </article>
+          <article class="story-step" data-team="HOU" data-season="2019">
+            <h4>Houston's all-in</h4>
+            <p>Rockets embrace the math: the hottest band on the chart by 2019.</p>
+          </article>
+        </div>
+      </div>
+      <div class="story-viz">
+        <div class="viz-shell" id="heatmapChart"></div>
+      </div>
+    </section>
+
+    <section class="viz-block story-grid" id="team-map">
+      <div class="story-copy">
+        <p class="eyebrow">Act V — Geography of firepower</p>
+        <h2>Spacing spreads coast to coast</h2>
+        <p>
+          A geographic view of the latest season. Bubble size = offensive efficiency; color = conference; glow = 3P devotion.
+        </p>
+        <div class="story-steps" data-story="map">
+          <article class="story-step active" data-conference="">
+            <h4>League-wide heat</h4>
+            <p>Almost every city now owns a modern 3-point profile.</p>
+          </article>
+          <article class="story-step" data-conference="West">
+            <h4>Western arms race</h4>
+            <p>West contenders cluster with high offensive ratings and heavy 3P diets.</p>
+          </article>
+          <article class="story-step" data-conference="East">
+            <h4>East catches up</h4>
+            <p>Eastern powers mirror the recipe, shrinking the stylistic gap.</p>
+          </article>
+        </div>
+      </div>
+      <div class="story-viz">
+        <div class="map-legend" id="mapLegend">
+          <span class="chip"><span class="dot" style="background:#60d2ff"></span>East</span>
+          <span class="chip"><span class="dot" style="background:#f25f5c"></span>West</span>
+          <span class="chip">Bubble size: offensive rating</span>
+        </div>
+        <div class="viz-shell" id="teamMap"></div>
+      </div>
+    </section>
+
+    <section class="viz-block story-grid" id="momentum">
+      <div class="story-copy">
+        <p class="eyebrow">Finale — Momentum Spiral</p>
+        <h2>The arc pulls the league into a new orbit</h2>
+        <p>
+          A spiral timeline wraps two decades of momentum into a single motion. Radius encodes the league’s blended 3-point index; color shows accuracy.
+        </p>
+        <div class="story-steps" data-story="spiral">
+          <article class="story-step active" data-season="2004">
+            <h4>Slow turn</h4>
+            <p>The spiral starts tight—3s are still an experiment.</p>
+          </article>
+          <article class="story-step" data-season="2016">
+            <h4>Acceleration</h4>
+            <p>Mid-2010s layers widen as volume and accuracy lock in together.</p>
+          </article>
+          <article class="story-step" data-season="2022">
+            <h4>New orbit</h4>
+            <p>The latest ring is the widest yet: spacing is the league's gravity.</p>
+          </article>
+        </div>
+      </div>
+      <div class="story-viz">
+        <div class="viz-shell" id="momentumSpiral"></div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <p>Data: Nathan Lauga, Kaggle NBA Games (1995‑2023) • Built with vanilla D3 v7 • December 2024 WIP checkpoint.</p>
+    <p>Data: Nathan Lauga, Kaggle NBA Games (1995-2023) • Built with vanilla D3 v7 • December 2024 WIP checkpoint.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
   <script src="scripts/app.js" defer></script>
 </body>
 

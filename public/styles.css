@@ -110,6 +110,65 @@ main {
   box-shadow: 0 20px 40px rgba(3, 4, 12, 0.65);
 }
 
+.act-intro {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(96, 210, 255, 0.08), rgba(242, 95, 92, 0.08)),
+    var(--panel);
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(420px, 1.3fr);
+  gap: clamp(1rem, 4vw, 2rem);
+  align-items: start;
+}
+
+.story-copy h4 {
+  margin: 0;
+}
+
+.story-steps {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.story-step {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.3s;
+}
+
+.story-step:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.story-step.active {
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px rgba(242, 95, 92, 0.15);
+  background: radial-gradient(circle at 20% 20%, rgba(242, 95, 92, 0.12), rgba(9, 11, 23, 0.2));
+}
+
+.story-step h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  color: var(--white);
+}
+
+.story-step p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.story-viz {
+  width: 100%;
+}
+
 .block-header h2 {
   margin: 0 0 0.5rem;
   font-family: var(--font-display);
@@ -224,6 +283,60 @@ footer {
   text-align: center;
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.heat-legend .bar {
+  height: 10px;
+  flex: 1;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1b1733, #45346a, #9c367a, #f25f5c, #f5cd6a);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.map-legend .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+}
+
+.map-legend .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.spiral-label {
+  text-anchor: middle;
+  font-size: 0.95rem;
+  fill: var(--white);
+  font-family: var(--font-display);
+}
+
+@media (max-width: 960px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
