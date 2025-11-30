@@ -13,6 +13,88 @@
   const numberFmt = d3.format(".1f");
   const percentFmt = d3.format(".1%");
   const controllers = {};
+  const THEME_KEY = "nba3-theme";
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const hideTooltip = () => tooltip.classed("show", false);
+  const isInViewport = (selection, margin = 80) => {
+    const node = selection?.node?.();
+    if (!node) return false;
+    const rect = node.getBoundingClientRect();
+    return rect.bottom > margin && rect.top < window.innerHeight - margin;
+  };
+
+  function applyTheme(theme, persist = true) {
+    const normalized = theme === "light" ? "light" : "dark";
+    document.documentElement.dataset.theme = normalized;
+    document.documentElement.style.setProperty("color-scheme", normalized);
+
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_KEY, normalized);
+      } catch (err) {
+        console.warn("Could not persist theme preference", err);
+      }
+    }
+
+    const toggle = document.getElementById("themeToggle");
+    if (toggle) {
+      const nextLabel = normalized === "dark" ? "Switch to light" : "Switch to dark";
+      toggle.textContent = nextLabel;
+      toggle.setAttribute("aria-pressed", normalized === "light");
+    }
+  }
+
+  function bootstrapTheme() {
+    let stored = null;
+    try {
+      stored = localStorage.getItem(THEME_KEY);
+    } catch (err) {
+      stored = null;
+    }
+
+    const initial =
+      stored === "light" || stored === "dark"
+        ? stored
+        : prefersDark.matches
+        ? "dark"
+        : "light";
+    applyTheme(initial, false);
+
+    const handleChange = (event) => {
+      const userSet = (() => {
+        try {
+          return localStorage.getItem(THEME_KEY);
+        } catch (err) {
+          return null;
+        }
+      })();
+      if (!userSet) {
+        applyTheme(event.matches ? "dark" : "light", false);
+      }
+    };
+
+    if (prefersDark.addEventListener) {
+      prefersDark.addEventListener("change", handleChange);
+    } else if (prefersDark.addListener) {
+      prefersDark.addListener(handleChange);
+    }
+  }
+
+  function setupThemeToggle() {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+      const next = current === "light" ? "dark" : "light";
+      applyTheme(next);
+    });
+  }
+
+  bootstrapTheme();
+  setupThemeToggle();
+  window.addEventListener("scroll", hideTooltip, { passive: true });
+  window.addEventListener("resize", hideTooltip);
 
   async function init() {
     try {
@@ -53,6 +135,7 @@
     if (!steps.length) return;
 
     const activateStep = (step) => {
+      hideTooltip();
       if (!step) return;
       const parent = step.parentElement;
       parent?.querySelectorAll(".story-step").forEach((el) =>
@@ -253,6 +336,10 @@
     let activeMetric = null;
 
     function showTooltip(datum) {
+      if (!isInViewport(container)) {
+        hideTooltip();
+        return;
+      }
       const rows = metricData
         .filter((metric) => !activeMetric || activeMetric === metric.key)
         .map(
@@ -345,6 +432,10 @@
     function focusSeason(season) {
       const datum =
         data.find((d) => d.season === season) || data[data.length - 1];
+      if (!datum || !isInViewport(container)) {
+        hideTooltip();
+        return;
+      }
       crosshair
         .attr("x1", x(datum.season))
         .attr("x2", x(datum.season))
@@ -448,6 +539,10 @@
       .attr("opacity", 0);
 
     function showSeason(datum) {
+      if (!isInViewport(container)) {
+        hideTooltip();
+        return;
+      }
       const rows = keys
         .map(
           ({ key, label, color }) =>
@@ -487,6 +582,10 @@
     function focusSeason(season) {
       const datum =
         data.find((d) => d.season === season) || data[data.length - 1];
+      if (!datum || !isInViewport(container)) {
+        hideTooltip();
+        return;
+      }
       showSeason(datum);
     }
 
@@ -973,11 +1072,16 @@
     const height = 520;
     const center = [width / 2, height / 2];
 
+    const maxRadius = Math.min(width, height) / 2 - 36;
+    const spacing = Math.min(14, Math.max(7, maxRadius / Math.max(10, data.length + 4)));
+    const baseRadius = Math.max(28, maxRadius - spacing * (data.length - 1));
+    const innerRadius = Math.max(20, baseRadius * 0.6);
+    const outerRadius = baseRadius + spacing * (data.length - 1);
     const angleStep = Math.PI / 3.2; // graceful spiral cadence
     const radiusScale = d3
       .scaleLinear()
       .domain(d3.extent(data, (d) => d.momentum))
-      .range([40, 210]);
+      .range([innerRadius, baseRadius]);
     const color = d3
       .scaleSequential(d3.interpolateTurbo)
       .domain(d3.extent(data, (d) => d.avgThreePct));
@@ -985,7 +1089,7 @@
     const radialLine = d3
       .lineRadial()
       .angle((_, i) => i * angleStep)
-      .radius((d, i) => radiusScale(d.momentum) + i * 8)
+      .radius((d, i) => radiusScale(d.momentum) + i * spacing)
       .curve(d3.curveCatmullRom.alpha(0.85));
 
     const svg = container
@@ -997,23 +1101,20 @@
       .append("g")
       .attr("transform", `translate(${center[0]},${center[1]})`);
 
-    const ringLevels = [80, 140, 200, 260];
+    const ringLevels = [0.25, 0.5, 0.75, 1].map(
+      (t) => innerRadius + t * (outerRadius - innerRadius)
+    );
     g.append("g")
       .selectAll("circle")
       .data(ringLevels)
       .join("circle")
       .attr("r", (d) => d)
-      .attr("fill", "none")
-      .attr("stroke", "rgba(255,255,255,0.05)")
-      .attr("stroke-dasharray", "4 6");
+      .attr("class", "spiral-ring");
 
     const spiralPath = g
       .append("path")
       .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "#f7f7ff")
-      .attr("stroke-width", 1.2)
-      .attr("stroke-opacity", 0.4)
+      .attr("class", "spiral-path")
       .attr("d", radialLine);
 
     const dots = g
@@ -1021,8 +1122,8 @@
       .data(data)
       .join("circle")
       .attr("class", "spiral-dot")
-      .attr("cx", (d, i) => d3.pointRadial(i * angleStep, radiusScale(d.momentum) + i * 8)[0])
-      .attr("cy", (d, i) => d3.pointRadial(i * angleStep, radiusScale(d.momentum) + i * 8)[1])
+      .attr("cx", (d, i) => d3.pointRadial(i * angleStep, radiusScale(d.momentum) + i * spacing)[0])
+      .attr("cy", (d, i) => d3.pointRadial(i * angleStep, radiusScale(d.momentum) + i * spacing)[1])
       .attr("r", 5)
       .attr("fill", (d) => color(d.avgThreePct))
       .attr("stroke", "rgba(9,11,23,0.7)")
@@ -1064,12 +1165,13 @@
         .transition()
         .duration(250)
         .attr("r", (d) => (d === datum ? 9 : 5))
-        .attr("opacity", (d) => (d === datum ? 1 : 0.55));
+        .attr("stroke-width", (d) => (d === datum ? 2.4 : 1.5))
+        .attr("opacity", (d) => (d === datum ? 1 : 0.6));
 
       const idx = data.indexOf(datum);
       const [x, y] = d3.pointRadial(
         idx * angleStep,
-        radiusScale(datum.momentum) + idx * 8
+        radiusScale(datum.momentum) + idx * spacing
       );
       label
         .attr("x", x)

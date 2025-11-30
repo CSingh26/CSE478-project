@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -15,7 +15,12 @@
 
 <body>
   <header class="hero">
-    <p class="eyebrow">CSE 478</p>
+    <div class="hero-top">
+      <p class="eyebrow">CSE 478</p>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
+        Switch to light
+      </button>
+    </div>
     <h1>The 3-Point Revolution</h1>
     <p class="lede">
       Tracking how the NBA's obsession with the arc reshaped pace, scoring, and winning over the last two decades.
@@ -32,8 +37,8 @@
         <p>Growth in league-wide 3PA rate</p>
       </article>
       <article>
-        <h3>3 visualizations</h3>
-        <p>Linked + animated D3 modules</p>
+        <h3>6 visualizations</h3>
+        <p>Linked D3 scrollytelling + map & spiral</p>
       </article>
     </div>
   </header>
