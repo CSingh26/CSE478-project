@@ -130,21 +130,6 @@ Here are some screenshots of the dashboard:
 
 
 
-📦 API Reference
-================
-
-The project provides a robust API for retrieving and manipulating data. The API is documented using Swagger and can be accessed at `http://localhost:8000/api/docs`.
-
-**API Endpoints**
-
-The API provides the following endpoints:
-
-* `GET /api/data`: Retrieves a list of available data files
-* `GET /api/data/{id}`: Retrieves a specific data file by ID
-* `POST /api/data`: Creates a new data file
-* `PUT /api/data/{id}`: Updates an existing data file
-* `DELETE /api/data/{id}`: Deletes a data file
-
 👤 Author
 =======
 
