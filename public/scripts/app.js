@@ -43,6 +43,8 @@
       toggle.textContent = nextLabel;
       toggle.setAttribute("aria-pressed", normalized === "light");
     }
+
+    controllers.map?.applyThemeColors?.();
   }
 
   function bootstrapTheme() {
@@ -962,16 +964,14 @@
       .attr("fill", "url(#mapGrad)")
       .attr("opacity", 0.12);
 
-    if (states) {
-      g.append("g")
-        .selectAll("path")
-        .data(states.features)
-        .join("path")
-        .attr("d", path)
-        .attr("fill", "rgba(255,255,255,0.03)")
-        .attr("stroke", "rgba(255,255,255,0.08)")
-        .attr("stroke-width", 0.6);
-    }
+    const statesPaths = states
+      ? g
+          .append("g")
+          .selectAll("path")
+          .data(states.features)
+          .join("path")
+          .attr("d", path)
+      : null;
 
     const positioned = teamData
       .map((d) => {
@@ -1037,16 +1037,33 @@
       });
 
     const best = d3.greatest(positioned, (d) => d.offRtg);
-    if (best) {
+    const bestLabel = (() => {
+      if (!best) return null;
       const [bx, by] = projection([best.lon, best.lat]);
-      g.append("text")
+      return g
+        .append("text")
         .attr("x", bx)
         .attr("y", by - r(best.offRtg) - 6)
-        .attr("fill", "#fff")
         .attr("text-anchor", "middle")
         .attr("font-size", 12)
         .text("Top offense");
+    })();
+
+    function applyThemeColors() {
+      const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+      const landFill = theme === "light" ? "rgba(12,18,35,0.06)" : "rgba(255,255,255,0.03)";
+      const landStroke = theme === "light" ? "rgba(12,18,35,0.14)" : "rgba(255,255,255,0.08)";
+      const bubbleStroke = theme === "light" ? "rgba(12,18,35,0.55)" : "rgba(9,11,23,0.65)";
+      const labelFill = theme === "light" ? "#0b1226" : "#fff";
+
+      if (statesPaths) {
+        statesPaths.attr("fill", landFill).attr("stroke", landStroke).attr("stroke-width", 0.7);
+      }
+      bubbles.attr("stroke", bubbleStroke);
+      bestLabel?.attr("fill", labelFill);
     }
+
+    applyThemeColors();
 
     function focusConference(conference) {
       bubbles
@@ -1060,7 +1077,7 @@
         );
     }
 
-    return { focusConference };
+    return { focusConference, applyThemeColors };
   }
 
   function renderMomentumSpiral(rawData) {
